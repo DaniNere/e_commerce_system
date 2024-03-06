@@ -1,19 +1,18 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
-require('dotenv').config();
+const dotenv = require('dotenv').config();
 const cors = require('cors');
 
-app.use(cors());
-app.options('*',cors());
+const app = express();  // Inicialize o objeto app aqui
 
-const app = express(); 
+app.use(cors());
+app.options('*', cors());
 
 const categoriesRoute = require('./routes/categories');
 const productRoute = require('./routes/products');
 const userRoute = require('./routes/users');
 const orderRoute = require('./routes/orders');
-
 
 // Middleware
 app.use(bodyParser.json());
@@ -27,6 +26,6 @@ app.use(`${api}/categories`, categoriesRoute);
 app.use(`${api}/users`, userRoute);
 app.use(`${api}/orders`, orderRoute);
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("O servidor está rodando em http://localhost:3000");
 });
