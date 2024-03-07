@@ -19,7 +19,7 @@ const userShema = mongoose.Schema ({
     },
     //se o usuário é adm ou cliente
     role:{
-        type:Number,
+        type: Boolean,
         default:0
     },
     picture:{
@@ -29,4 +29,4 @@ const userShema = mongoose.Schema ({
 },{timestamp:true}
 );
 
-exports.User = mongoose.model('User', userShema)
+module.exports = mongoose.model('User', userShema)
