@@ -28,4 +28,16 @@ if (!category){
     res.send(category);
 }
 
+router.delete("/:id", (req, res) =>{
+    Category.findByAndRemove(req.params.id).then(category =>{
+        if(category) {
+            return res.status(200).json({sucess : true, message: "Category deleted sucessfully"})
+        } else {
+            return res.status(404).json({ sucess: false, message: "Category cannot find"})
+        }
+    }).catch (err => {
+        return res.status(400).json({ sucess: false, error: err})
+    })
+})
+
 module.exports = router
