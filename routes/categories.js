@@ -1,43 +1,54 @@
-const espress = require("express");
-const router = express();
-
+const express = require("express");
+const router = express.Router();
 const Category = require("../models/category");
-const category = require("../models/category");
 
-router.get("/", async (req,res) =>{
-    const categoryList = await Category.find();
 
-    if(!categoryList) {
-        res.status(500).json({ sucess: false})
+
+router.get("/", async (req, res) => {
+    try {
+        const categoryList = await Category.find();
+        res.status(200).send(categoryList);
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
     }
-    res.send(categoryList)
-})
+});
 
-router.post("/", async (req, res) =>{
-    let category = new Category({
-        name: req.body.name,
-        icon: req.body.icon,
-        color: req.body.color
-    })
-})
+router.post("/", async (req, res) => {
+    try {
+        const { name, icon, color } = req.body;
+      
+        const newCategory = new Category({
+            name: name,
+            icon: icon,
+            color: color
+        });
 
-category = await category.save();
+        
+        const savedCategory = await newCategory.save();
 
-if (!category){
-    return res.status(404).send("Category cannot be created")
-    res.send(category);
-}
-
-router.delete("/:id", (req, res) =>{
-    Category.findByAndRemove(req.params.id).then(category =>{
-        if(category) {
-            return res.status(200).json({sucess : true, message: "Category deleted sucessfully"})
-        } else {
-            return res.status(404).json({ sucess: false, message: "Category cannot find"})
+        if (!savedCategory) {
+            return res.status(404).send("Category cannot be created");
         }
-    }).catch (err => {
-        return res.status(400).json({ sucess: false, error: err})
-    })
-})
 
-module.exports = router
+        res.status(201).send(savedCategory);
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+
+router.delete("/:id", async (req, res) => {
+    try {
+        const deletedCategory = await Category.findByIdAndRemove(req.params.id);
+
+        if (deletedCategory) {
+            return res.status(200).json({ success: true, message: "Category deleted successfully" });
+        } else {
+            return res.status(404).json({ success: false, message: "Category not found" });
+        }
+    } catch (error) {
+        return res.status(400).json({ success: false, error: error.message });
+    }
+});
+
+module.exports = router;
