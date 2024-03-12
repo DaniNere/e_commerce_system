@@ -3,6 +3,7 @@ const router = express.Router();
 const Category = require("../models/category")
 const Product = require("../models/product");
 const { create } = require("../controlers/user");
+const product = require("../models/product");
 
 router.get("/", async (req, res) =>{
 try{
@@ -77,7 +78,21 @@ router.post("/", async (req, res) => {
     }catch(error){
         return res.status(500).json({ success: false, message: error.message });
     }
-  })
+  });
+
+  router.delete("/:id", async (req,res) =>{
+    try{
+        const product = await Product.findByIdAndRemove(req.params.id);
+
+            if(product){
+                return res.status(200).json({sucess: true, message: "Porduct deleted successfuly"});
+            } else {
+                return res.status(404).json({sucess: false, message: " Product not found"});
+            }
+    }catch(error){
+return res.status(400).json({ sucess: false, error: error.message});
+    }    
+  });
   
   module.exports = router;
 
