@@ -13,6 +13,19 @@ router.get("/", async (req, res) => {
     }
 });
 
+
+router.get("/:id", async (req,res) =>{
+    try{
+        const category = await Category.findId(req.params.id);
+        res.status(200).send(category)
+
+    }catch{
+        res.status(500).json({sucess: false})
+
+    }
+});
+
+
 router.post("/", async (req, res) => {
     try {
         const { name, icon, color } = req.body;
