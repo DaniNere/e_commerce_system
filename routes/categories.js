@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Category = require("../models/category");
+const category = require("../models/category");
 
 
 
@@ -16,11 +17,11 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req,res) =>{
     try{
-        const category = await Category.findId(req.params.id);
+        const category = await Category.findById(req.params.id);
         res.status(200).send(category)
 
     }catch{
-        res.status(500).json({sucess: false})
+        res.status(500).json({sucess: false, message: "The category with the given ID not exists"})
 
     }
 });
@@ -49,6 +50,21 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.put("/:id", async (req,res) =>{
+    try{
+        const category = await Category.findByIdAndUpdate(req.params.id, {
+            name: req.body.nome,
+            icon: req.body.icon,
+            color: req.body.color
+        },{
+            new: true            
+        })
+        res.send(category);
+
+    }catch{
+        return res.status(404).send("Category cannot be created") 
+    }
+});
 
 router.delete("/:id", async (req, res) => {
     try {
