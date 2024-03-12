@@ -6,7 +6,7 @@ const { create } = require("../controlers/user");
 
 router.get("/", async (req, res) =>{
 try{
-    const productList= await Product.find().select("name image -_id");
+    const productList= await Product.find().select("name image");
     res.status(200).send(productList);
 }catch(error){
     res.status(500).json({sucess:false, error: error.message})
@@ -15,7 +15,7 @@ try{
 
 router.get("/:id", async (req, res) =>{
     try{
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).populate("category");
         res.status(200).send(product)
     }catch(error){
         res.status(500).json({ sucess: false, message: "The product with the given ID not exists"})
