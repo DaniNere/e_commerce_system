@@ -13,6 +13,16 @@ try{
 } 
 });
 
+router.get("/:id", async (req, res) =>{
+    try{
+        const product = await Product.findById(req.params.id);
+        res.status(200).send(product)
+    }catch(error){
+        res.status(500).json({ sucess: false, message: "The product with the given ID not exists"})
+    }
+    
+});
+
 router.post("/", async (req, res) => {
     try {
       const product = new Product({
