@@ -4,6 +4,7 @@ const Category = require("../models/category")
 const Product = require("../models/product");
 const { create } = require("../controlers/user");
 const product = require("../models/product");
+const mongoose = require("mongoose");
 
 router.get("/", async (req, res) =>{
 try{
