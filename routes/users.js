@@ -13,13 +13,25 @@ router.get('/', async (req, res) =>{
     res.send(userList);
 });
 
+router.get("/:id", async(req,res)=> {
+
+try{
+    const user = await User.findById(req.params.id);
+    res.status(200).send(user)
+
+} catch(error){
+
+    res.status(500).json({ success: false, message: 'The user with the given ID not exists' });
+}
+
+});
 router.post('/', async (req, res) => {
     try {
         const { name, email, password, phone, isAdmin, street, apartment, zip, city, country } = req.body;
         
         // Verificar se o e-mail já está cadastrado
         const verifyEmail = await User.findOne({ email }).exec();
-        
+
         if (verifyEmail) {
             return res.status(400).send("Usuário já cadastrado");
         }
