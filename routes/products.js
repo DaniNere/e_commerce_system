@@ -6,7 +6,14 @@ const mongoose = require("mongoose");
 
 router.get("/", async (req, res) => {
     try {
-        const productList = await Product.find().select("name image");
+        let filter = {};
+        if(req.query.categories)
+        {
+            filter = {category: req.query.categories.split(',')};
+        }
+    
+        const productList = await Product.find(filter).populate('category');
+        // const productList = await Product.find(filter).select('name image');
         res.status(200).send(productList);
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
