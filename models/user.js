@@ -11,22 +11,37 @@ const userShema = mongoose.Schema ({
         unique:true,
         required:true
     },
-    password:{
+    passwordHash:{
         type:String,
         required:true,
         min:6,
         max:64 
     },
     //se o usuário é adm ou cliente
-    role:{
+    isAdmin: {
         type: Boolean,
-        default:0
+        default: false
     },
-    picture:{
-        type:String,
-        default: './avatar.png'
+    street: {
+        type: String,
+        default: ''
     },
-},{timestamp:true}
+    apartment: {
+        type: String,
+        default: ''
+    },
+    zip: {
+        type: String,
+        default: ''
+    },
+    city: {
+        type: String,
+        default: ''
+    },
+    country: {
+        type: String,
+        default: ''
+}},{timestamp:true}
 );
 
 module.exports = mongoose.model('User', userShema)
