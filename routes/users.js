@@ -5,7 +5,7 @@ const {hashPassword} = require('../utils/passwordUtils');
 
 
 router.get('/', async (req, res) =>{
-    const userList = await User.find();
+    const userList = await User.find().select("-passwordHash");
 
     if(!userList) {
         res.status(500).json({success:false})
@@ -16,7 +16,7 @@ router.get('/', async (req, res) =>{
 router.get("/:id", async(req,res)=> {
 
 try{
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).select("-passwordHash");
     res.status(200).send(user)
 
 } catch(error){
