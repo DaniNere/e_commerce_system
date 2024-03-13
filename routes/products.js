@@ -27,9 +27,9 @@ router.get("/:id", async (req, res) =>{
 
 router.post("/", async (req, res) => {
     
-    if (!mongoose.isValidObjectId(req.params.id)) {
-        return res.status(400).send('Invalid Product ID');
-      }
+    // if (!mongoose.isValidObjectId(req.params.id)) {
+    //     return res.status(400).send('Invalid Product ID');
+    //   }
 
     try {
       const product = new Product({
@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
         image: req.body.image,
         brand: req.body.brand,
         price: req.body.price,
-        category: req.body.category,
+        category: mongoose.Types.ObjectId(req.body.category),
         countInStock: req.body.countInStock,
         rating: req.body.rating,
         numReviews: req.body.numReviews,
