@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req,res) =>{
     try{
         const category = await Category.findByIdAndUpdate(req.params.id, {
-            name: req.body.nome,
+            name: req.body.name,
             icon: req.body.icon,
             color: req.body.color
         },{
