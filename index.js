@@ -6,16 +6,22 @@ const cors = require('cors');
 
 const app = express();  // Inicialize o objeto app aqui
 
+const authJwt = require("./helpers/jwt");
+
 app.use(cors());
 app.options('*', cors());
+
+// Middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(morgan('tiny'));
+app.use(authJwt());
+
 
 const categoriesRoute = require('./routes/categories');
 const productRoute = require('./routes/products');
 const userRoute = require('./routes/users');
 const orderRoute = require('./routes/orders');
-
-// Middleware
-app.use(bodyParser.json());
 
 mongoose.connect(process.env.DATABASE_URL).then(() => 
 console.log("Banco Conectado")).catch(err => console.log("Erro ao conectar ao banco de dados"));
