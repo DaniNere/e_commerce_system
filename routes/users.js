@@ -72,22 +72,27 @@ router.post('/', async (req, res) => {
 
 router.post("/login", async (req, res) => {
     try {
-        const user = await User.findOne({ email: req.body.email });
-        if (!user) {
-            return res.status(400).send('User with given Email not found');
+        if (!req.body.password) {
+            return res.status(400).send('Password is required');
         }
 
-        if (user && bcrypt.compareSync(req.body.password, user.passwordHash)) {
-          const token = jwt.sign({
-            userID: user.id
-          }, secret )
-             res.status(200).send({user: user.email, token: token});
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(400).send('User with given email not found');
+        }
+
+        if (bcrypt.compareSync(req.body.password, user.passwordHash)) {
+            const token = jwt.sign({ userID: user.id }, process.env.JWT_SECRET);
+           
+            return res.status(200).send({ user: user.email, token: token });
         } else {
-            res.status(400).send('Password is mismatch');
+           
+            return res.status(400).send('Incorrect email or password');
         }
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
     }
 });
+
 
 module.exports = router;
