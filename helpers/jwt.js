@@ -9,6 +9,7 @@ function authJwt() {
     }).unless({ // Rota que deseja excluir
         path: [
             {url: /\/api\/products(.*)/, methods: ['GET', 'OPTIONS']},
+            {url: /\/api\/categories(.*)/, methods: ['GET', 'OPTIONS']},
             `${api}/users/login`,
             `${api}/users/register`
         ]
