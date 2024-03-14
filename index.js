@@ -28,7 +28,7 @@ const orderRoute = require('./routes/orders');
 mongoose.connect(process.env.DATABASE_URL).then(() => 
 console.log("Banco Conectado")).catch(err => console.log("Erro ao conectar ao banco de dados"));
 
-const api = '/api';
+const api = process.env.API_URL;
 //Routes
 app.use('/api', userRoute);
 app.use(`${api}/users`, userRoute);
