@@ -78,9 +78,12 @@ router.post("/login", async (req, res) => {
         }
 
         if (user && bcrypt.compareSync(req.body.password, user.passwordHash)) {
-            return res.status(200).send('User Authenticated');
+          const token = jwt.sign({
+            userID: user.id
+          }, secret )
+             res.status(200).send({user: user.email, token: token});
         } else {
-            return res.status(400).send('Password is mismatch');
+            res.status(400).send('Password is mismatch');
         }
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
