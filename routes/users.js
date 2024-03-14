@@ -81,8 +81,8 @@ router.post("/login", async (req, res) => {
             return res.status(400).send('User with given email not found');
         }
 
-        if (bcrypt.compareSync(req.body.password, user.passwordHash)) {
-            const token = jwt.sign({ userID: user.id }, secret, { expiresIn: '1d' });
+        if (user && bcrypt.compareSync(req.body.password, user.passwordHash)) {
+            const token = jwt.sign({ userID: user.id, isAdmin: user.isAdmin}, secret, { expiresIn: '1d' });
            
             return res.status(200).send({ user: user.email, token: token });
         } else {
