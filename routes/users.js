@@ -27,7 +27,7 @@ try{
 }
 
 });
-router.post('/', async (req, res) => {
+router.post('/register', async (req, res) => {
     try {
         const { name, email, password, phone, isAdmin, street, apartment, zip, city, country } = req.body;
         
