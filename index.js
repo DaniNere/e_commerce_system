@@ -7,6 +7,7 @@ const cors = require('cors');
 const app = express();  // Inicialize o objeto app aqui
 
 const authJwt = require("./helpers/jwt");
+const errorHandler = require("./helpers/error-handler");
 
 app.use(cors());
 app.options('*', cors());
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(morgan('tiny'));
 app.use(authJwt());
+app.use(errorHandler);
 
 
 const categoriesRoute = require('./routes/categories');
