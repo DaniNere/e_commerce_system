@@ -30,7 +30,7 @@ console.log("Banco Conectado")).catch(err => console.log("Erro ao conectar ao ba
 
 const api = process.env.API_URL;
 //Routes
-app.use('/api', userRoute);
+
 app.use(`${api}/users`, userRoute);
 app.use(`${api}/products`, productRoute);
 app.use(`${api}/categories`, categoriesRoute);
