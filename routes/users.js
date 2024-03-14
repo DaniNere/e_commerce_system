@@ -70,6 +70,16 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.get("/get/count", async (req,res) => {
+    try{
+        const userCount = await User.countDocuments((count)=> count);
+        res.status(200).send({userCount: userCount});
+    }catch(error){
+        res.status(500), json({ success: false })
+    }
+});
+
+
 router.post("/login", async (req, res) => {
     try {
         if (!req.body.password) {
