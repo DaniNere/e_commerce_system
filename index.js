@@ -12,9 +12,9 @@ const app = express();  // Inicialize o objeto app aqui
 const categoriesRoute = require('./routes/categories');
 const productRoute = require('./routes/products');
 const userRoute = require('./routes/users');
-//const orderRoute = require('./routes/orders');
+const orderRoute = require('./routes/orders');
 
-const authJwt = require("./helpers/jwt"); // Importe o middleware authJwt após a definição das rotas
+const authJwt = require("./helpers/jwt");
 const errorHandler = require("./helpers/error-handler");
 
 mongoose.connect(process.env.DATABASE_URL).then(() => 
@@ -34,7 +34,7 @@ app.use(authJwt);
 app.use(`${api}/users`, userRoute);
 app.use(`${api}/products`, productRoute);
 app.use(`${api}/categories`, categoriesRoute);
-//app.use(`${api}/orders`, orderRoute);
+app.use(`${api}/orders`, orderRoute);
 
 app.use(errorHandler);
 
