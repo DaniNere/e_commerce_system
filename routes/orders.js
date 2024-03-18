@@ -57,5 +57,20 @@ router.post("/", async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+router.delete("/:id", async (req, res) => {
+    try {
+        const order = await Order.findByIdAndRemove(req.params.id);
+        if (order) {
+            await Promise.all(order.orderItems.map(async orderItemId => {
+                await OrderItem.findByIdAndRemove(orderItemId);
+            }));
+            return res.status(200).json({ success: true, message: 'Order deleted successfully' });
+        } else {
+            return res.status(404).json({ success: false, message: 'Order not found' });
+        }
+    } catch (error) {
+        return res.status(400).json({ success: false, error: error.message });
+    }
+});
 
 module.exports = router;
