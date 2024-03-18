@@ -4,7 +4,10 @@ const mongoose = require("mongoose");
 const dotenv = require('dotenv').config();
 const cors = require('cors');
 
+
 const app = express();  // Inicialize o objeto app aqui
+
+
 
 const categoriesRoute = require('./routes/categories');
 const productRoute = require('./routes/products');
@@ -17,14 +20,14 @@ const errorHandler = require("./helpers/error-handler");
 mongoose.connect(process.env.DATABASE_URL).then(() => 
 console.log("Banco Conectado")).catch(err => console.log("Erro ao conectar ao banco de dados"));
 
-const api = "/api";
+const api = process.env.API_URL;
 
 // Middleware
 app.use(cors());
 app.options('*', cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(authJwt); // Coloque o middleware authJwt após a definição das middleware de body parser
+app.use(authJwt);
 //app.use(morgan('tiny'));
 
 // Rotas
