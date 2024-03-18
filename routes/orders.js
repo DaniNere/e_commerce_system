@@ -6,7 +6,10 @@ const OrderItem = require("../models/OrderItem"); // Importe corretamente o mode
 
 router.get("/", async (req, res) => {
     try {
-        const orderList = await Order.find().populate("user", "name").sort({ dateOrdered: -1 });
+        const orderList = await Order.find().populate("user", "name").sort({ dateOrdered: -1 }).populate({ 
+            path: 'orderItems', populate: { 
+            path: 'product', populate: 'category'}
+        });
         res.send(orderList);
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
