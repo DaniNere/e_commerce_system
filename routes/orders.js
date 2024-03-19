@@ -88,6 +88,14 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+router.get('/count', async (req, res) => {
+    try {
+        const orderCount = await Order.countDocuments();
+        res.status(200).send({ orderCount: orderCount });
+    } catch (error) {
+        res.status(500).json({ success: false });
+    }        
+});
 router.get("/totalsales", async (req, res) => {
     try {
         const orders = await Order.find();
