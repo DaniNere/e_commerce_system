@@ -66,7 +66,7 @@ const orderSchema = mongoose.Schema({
 
     },
 
-    totalPrices: {
+    totalPrice: {
 
         type: Number
 
