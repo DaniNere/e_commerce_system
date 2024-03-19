@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router(); // Use express.Router() em vez de express()
 
 const Order = require("../models/order");
-const OrderItem = require("../models/OrderItem"); // Importe corretamente o modelo OrderItem
+const OrderItem = require("../models/order-item"); // Importe corretamente o modelo OrderItem
 
 router.get("/", async (req, res) => {
     try {
@@ -30,11 +30,12 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        const orderItemsIds = await Promise.all(req.body.orderItems.map(async orderItemData => {
-            let newOrderItem = new OrderItem({
-                quantity: orderItemData.quantity,
-                product: orderItemData.product
-            });
+               const orderItemsIds = await Promise.all(req.body.orderItems.map(async (orderItem) => {
+                let newOrderItem = new OrderItem({
+                quantity: orderItem.quantity,
+                product: orderItem.product
+            }); 
+            
             const savedOrderItem = await newOrderItem.save();
             return savedOrderItem._id;
         }));
@@ -59,18 +60,23 @@ router.post("/", async (req, res) => {
 });
 router.delete("/:id", async (req, res) => {
     try {
-        const order = await Order.findByIdAndRemove(req.params.id);
-        if (order) {
-            await Promise.all(order.orderItems.map(async orderItemId => {
-                await OrderItem.findByIdAndRemove(orderItemId);
-            }));
-            return res.status(200).json({ success: true, message: 'Order deleted successfully' });
-        } else {
+        const order = await Order.findById(req.params.id);
+        if (!order) {
             return res.status(404).json({ success: false, message: 'Order not found' });
         }
+
+        await Promise.all(order.orderItems.map(async orderItemId => {
+            await OrderItem.findByIdAndDelete(orderItemId);
+        }));
+
+        await Order.deleteOne({ _id: order._id });
+
+        return res.status(200).json({ success: true, message: 'Order and associated items deleted successfully' });
     } catch (error) {
         return res.status(400).json({ success: false, error: error.message });
     }
 });
+
+
 
 module.exports = router;
