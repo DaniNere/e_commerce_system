@@ -25,10 +25,12 @@ const api = process.env.API_URL;
 // Middleware
 app.use(cors());
 app.options('*', cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(authJwt);
-//app.use(morgan('tiny'));
+app.use(errorHandler);
+app.use('/public/uploads', express.static( __dirname + '/public/uploads'));
+
 
 // Rotas
 app.use(`${api}/users`, userRoute);
