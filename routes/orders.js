@@ -88,6 +88,22 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+router.get("/totalsales", async (req, res) => {
+    try {
+        const orders = await Order.find();
+        console.log('Orders:', orders); // Verifica se os documentos estão sendo recuperados corretamente
+        let totalSales = 0;
+        orders.forEach(order => {
+            console.log('Order:', order); // Verifica o conteúdo de cada documento
+            totalSales += order.totalPrice;
+        });
+        console.log('Total Sales:', totalSales); // Verifica o total de vendas calculado
+        res.send({ totalSales });
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(400).send('The total sales cannot be generated');
+    }
+});
 
 
 module.exports = router;
