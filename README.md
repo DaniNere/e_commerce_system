@@ -2,22 +2,24 @@
 
 This is a full-fledged E-Commerce API built using Express and Mongo. It contains all the necessary functionalities of an E-commerce API, including user registration, user login, category management (add, edit, delete), product management (add, edit, delete), addition of product feature images, addition of product images, order creation, and more.
 
-<br>
 ## 🛠️ Built With
-<br><br>
-|                                                        Javascript                                                         |                                                      Node.js                                                      |                                                       Express                                                       |                                                     Git                                                     |                                                      GitHub                                                       |                                                        MongoDb                                                         |                                                          NPM                                                          |
-| :-----------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: |
-| <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original-wordmark.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg" /> |
 
-<br>
-### 🔧 Authentication
+|                            JavaScript                               |                            Node.js                               |                           Express                                |                              Git                                 |                            GitHub                                |                             MongoDB                              |                               NPM                                |                             Swagger                               |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ----------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original-wordmark.svg"/> | <img height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg"/> | <img height="50" width="50" src="https://cdn.worldvectorlogo.com/logos/swagger.svg"/> |
+
+
+
+
+
+## 🔧 Authentication
 
 This API uses a `Bearer Token` authentication system.
 
-The token is obtained through the `POST /login` EndPoint.
+The token is obtained through the `POST /api/users/login` EndPoint.
 
 If the user and their credentials are valid, this route returns an object containing the validation token that will be required in all routes of this API, except for user registration and login, and category listing.
-
+</b>
 ## 🚀 Setup
 <br>
 These instructions will allow you to get a copy of the project running on your local machine for development, testing, and contribution purposes.
@@ -43,11 +45,11 @@ npm start
 
 ````
 http://localhost:3000/api-docs
-```
+````
 
-## API Endpoints
+## 🔧 API Endpoints
 
-## User Routes
+### User Routes:
 
 | Method | Endpoint                | Description            |
 | ------ | ----------------------- | ---------------------- |
@@ -60,21 +62,17 @@ http://localhost:3000/api-docs
 | POST   | /api/users/login        | Login user             |
 | GET    | /api/users/perfil       | Get authenticated user profile |
 
-### * Get Users
-
+#### Get Users
 `GET | /api/users`
 
-### * Get Single User
-
+#### Get Single User
 `GET | /api/users/{id}`
 
-### * Create User
-
+#### Create User
 `POST | /api/users/register`
 
 **Request:**
-
-````json
+```
 {
   "name": "Novo Usuário",
   "email": "novo_usuario@example.com",
@@ -87,11 +85,10 @@ http://localhost:3000/api-docs
   "city": "São Paulo",
   "country": "Brazil"
 }
+```
+**Response:**
 
-Response:
-
-```json
-
+```
 {
   "message": "User created successfully",
   "user": {
@@ -111,17 +108,16 @@ Response:
   }
 
 }
-* Get Total User Count
+```
+#### Get Total User Count
+`GET | /api/users/get/count`
 
-GET | /api/users/get/count
+#### Update User
+`PUT | /api/users/update`
 
-* Update User
-PUT | /api/users/update
-
-Request:
-
-json
-
+``
+**Request:**
+```
 {
   "name": "Novo Nome",
   "email": "novo_email@example.com",
@@ -134,9 +130,10 @@ json
   "city": "Rio de Janeiro",
   "country": "Brazil"
 }
-Response:
+```
+**Response:**
 
-json
+```
 {
   "success": true,
   "user": {
@@ -155,33 +152,28 @@ json
     "__v": 0
   }
 }
+```
+#### Delete User
+`DELETE | /api/users/{id}`
 
-* Delete User
+#### Login User
+`POST | /api/users/login`
 
-DELETE | /api/users/{id}
-
-* Login User
-POST | /api/users/login
-
-Request:
-
-json
-Copy code
+**Request:**
+```
 {
   "email": "novo_usuario@example.com",
   "password": "senha123"
 }
-Response:
-
-json
-Copy code
+```
+**Response:**
+```
 {
   "user": "novo_usuario@example.com",
   "token": "<jwt_token>"
 }
-
-### * Login User
-
+```
+#### Login User
 `POST | /api/users/login`
 
 | Key        | Value          |
@@ -189,7 +181,7 @@ Copy code
 | email      | admin@admin.com|
 | password   | password       |
 
-### * Create User
+#### Create User
 
 `POST | /api/users/register`
 
@@ -207,7 +199,7 @@ Copy code
 | country    | Sri Lanka      |
 
 
-## Category Routes
+### Category Routes
 
 | Method | Endpoint                | Description              |
 | ------ | ----------------------- | ------------------------ |
@@ -217,23 +209,22 @@ Copy code
 | PUT    | /api/categories/{id}    | Update a category        |
 | DELETE | /api/categories/{id}    | Delete a category        |
 
-### * Get Categories
+#### Get Categories
 
 `GET | /api/categories`
 
-### * Get Single Category
+#### Get Single Category
 
 `GET | /api/categories/{id}`
 
 **Request:**
-```json
+```
 {
   "id": "category_id"
 }
-Response:
-
-json
-Copy code
+````
+**Response:**
+```
 {
   "_id": "category_id",
   "name": "Category Name",
@@ -242,23 +233,19 @@ Copy code
   "createdAt": "2024-03-21T12:00:00.000Z",
   "updatedAt": "2024-03-21T12:00:00.000Z"
 }
-
-* Create Category
+````
+#### Create Category
 
 `POST | /api/categories`
-Request:
 
-json
-Copy code
+**Request:**
 {
   "name": "New Category",
   "icon": "new_category_icon",
   "color": "#ff0000"
 }
-Response:
-
-json
-Copy code
+**Response:**
+````
 {
   "_id": "new_category_id",
   "name": "New Category",
@@ -267,23 +254,21 @@ Copy code
   "createdAt": "2024-03-21T12:00:00.000Z",
   "updatedAt": "2024-03-21T12:00:00.000Z"
 }
+````
+#### Update Category
+`PUT | /api/categories/{id}`
 
-* Update Category
-PUT | /api/categories/{id}
+**Request:**
 
-Request:
-
-json
-Copy code
+````
 {
   "name": "Updated Category Name",
   "icon": "updated_category_icon",
   "color": "#0000ff"
 }
-Response:
-
-json
-Copy code
+````
+**Response:**
+````
 {
   "_id": "updated_category_id",
   "name": "Updated Category Name",
@@ -292,25 +277,22 @@ Copy code
   "createdAt": "2024-03-21T12:00:00.000Z",
   "updatedAt": "2024-03-21T12:00:00.000Z"
 }
-* Delete Category
-DELETE | /api/categories/{id}
-
-Request:
-
-json
-Copy code
+````
+### Delete Category
+`DELETE | /api/categories/{id}`
+**Request:**
+````
 {
   "id": "category_id"
 }
-Response:
-
-json
-Copy code
+````
+**Response:**
+````
 {
   "success": true,
   "message": "Category deleted successfully"
 }
-
+`````
 ## Product Routes
 
 | Method | Endpoint                    | Description                 |
@@ -323,23 +305,22 @@ Copy code
 | GET    | /api/products/get/count    | Get total product count     |
 | GET    | /api/products/get/featured | Get featured products       |
 
-### * Get Products
+#### Get Products
 
 `GET | /api/products`
 
-### * Get Single Product
+#### Get Single Product
 
 `GET | /api/products/{id}`
 
 **Request:**
-```json
+```
 {
   "id": "product_id"
 }
-Response:
-
-json
-Copy code
+````
+**Response:**
+```
 {
   "_id": "product_id",
   "name": "Product Name",
@@ -348,22 +329,20 @@ Copy code
   "createdAt": "2024-03-21T12:00:00.000Z",
   "updatedAt": "2024-03-21T12:00:00.000Z"
 }
-* Create Product
-POST | /api/products
+````
+#### Create Product
+`POST | /api/products`
 
-Request:
-
-json
-Copy code
+**Request:**
+```
 {
   "name": "New Product",
   "description": "New Product Description",
   ...
 }
-Response:
-
-json
-Copy code
+````
+**Response:**
+```
 {
   "_id": "new_product_id",
   "name": "New Product",
@@ -372,22 +351,21 @@ Copy code
   "createdAt": "2024-03-21T12:00:00.000Z",
   "updatedAt": "2024-03-21T12:00:00.000Z"
 }
-* Update Product
-PUT | /api/products/{id}
+````
 
-Request:
+#### Update Product
+`PUT | /api/products/{id}`
 
-json
-Copy code
+**Request:**
+```
 {
   "name": "Updated Product Name",
   "description": "Updated Product Description",
   ...
 }
-Response:
-
-json
-Copy code
+````
+**Response:**
+````
 {
   "_id": "updated_product_id",
   "name": "Updated Product Name",
@@ -396,42 +374,38 @@ Copy code
   "createdAt": "2024-03-21T12:00:00.000Z",
   "updatedAt": "2024-03-21T12:00:00.000Z"
 }
-* Delete Product
-DELETE | /api/products/{id}
+````
+#### Delete Product
+`DELETE | /api/products/{id}`
 
-Request:
-
-json
-Copy code
+**Request:**
+````
 {
   "id": "product_id"
 }
-Response:
-
-json
-Copy code
+````
+**Response:**
+````
 {
   "success": true,
   "message": "Product deleted successfully"
 }
-* Get Total Product Count
+````
+#### Total Product Count
 GET | /api/products/get/count
 
-Response:
-
-json
-Copy code
+**Response:**
+````
 {
   "success": true,
   "productCount": 10
 }
-* Get Featured Products
-GET | /api/products/get/featured
+````
+#### Featured Products
+`GET | /api/products/get/featured`
 
-Response:
-
-json
-Copy code
+**Response:**
+````
 {
   "success": true,
   "products": [
@@ -448,7 +422,7 @@ Copy code
     ...
   ]
 }
-
+````
 ## Order Routes
 
 | Method | Endpoint                             | Description                               |
@@ -461,23 +435,22 @@ Copy code
 | GET    | /api/orders/totalsales               | Get total sales                           |
 | GET    | /api/orders/usersorders/{userid}     | Get orders of a specific user             |
 
-### * Get Orders
+#### * Get Orders
 
 `GET | /api/orders`
 
-### * Get Single Order
+#### * Get Single Order
 
 `GET | /api/orders/{id}`
 
 **Request:**
-```json
+```
 {
   "id": "order_id"
 }
-Response:
-
-json
-Copy code
+````
+**Response:**
+````
 {
   "_id": "order_id",
   "orderItems": [
@@ -498,13 +471,12 @@ Copy code
   "createdAt": "2024-03-21T12:00:00.000Z",
   "updatedAt": "2024-03-21T12:00:00.000Z"
 }
-* Create Order
-POST | /api/orders
+````
+#### * Create Order
+`POST | /api/orders`
 
-Request:
-
-json
-Copy code
+**Request:**
+````
 {
   "orderItems": [
     {
@@ -517,10 +489,10 @@ Copy code
   "shippingAddress2": "Address 2",
   ...
 }
-Response:
+````
+**Response:**
 
-json
-Copy code
+````
 {
   "_id": "new_order_id",
   "orderItems": [
@@ -541,58 +513,53 @@ Copy code
   "createdAt": "2024-03-21T12:00:00.000Z",
   "updatedAt": "2024-03-21T12:00:00.000Z"
 }
-* Delete Order
-DELETE | /api/orders/{id}
+````
 
-Request:
+#### * Delete Order
+`DELETE | /api/orders/{id}`
 
-json
-Copy code
+**Request:**
+
+```
 {
   "id": "order_id"
 }
-Response:
-
-json
-Copy code
+````
+**Response:**
+````
 {
   "success": true,
   "message": "Order and associated items deleted successfully"
 }
 * Get Total Order Count
-GET | /api/orders/count
+`GET | /api/orders/count`
+````
 
-Response:
-
-json
-Copy code
+**Response:**
 {
   "orderCount": 10
 }
-* Get Total Sales
-GET | /api/orders/totalsales
-
-Response:
-
-json
-Copy code
+```
+#### * Get Total Sales
+`GET | /api/orders/totalsales`
+````
+**Response:**
+```
 {
   "totalSales": 1500
 }
-* Get User Orders
-GET | /api/orders/usersorders/{userid}
+```
+#### * Get User Orders
+`GET | /api/orders/usersorders/{userid}`
 
-Request:
-
-json
-Copy code
+**Request:**
+````
 {
   "userid": "user_id"
 }
-Response:
-
-json
-Copy code
+````
+**Response**
+````
 [
   {
     "_id": "order_id_1",
@@ -612,6 +579,6 @@ Copy code
     "updatedAt": "2024-03-21T12:00:00.000Z"
   },
 ]
-
+````
 ## Author
    [Danielle Nere](https://github.com/DaniNere)
