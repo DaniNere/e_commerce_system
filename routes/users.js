@@ -4,8 +4,27 @@ const User = require('../models/user');
 const {hashPassword} = require('../utils/passwordUtils');
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+/**
+ * @swagger
+ * tags:
+ *   - name: Users
+ *     description: Operações relacionadas a usuários
+ */
 
-
+/**
+ * @swagger
+ * /api/users:
+ *   get:
+ *     summary: Retorna todos os usuários.
+ *     tags:
+ *       - Users
+ *     description: Retorna uma lista de todos os usuários cadastrados.
+ *     responses:
+ *       200:
+ *         description: Lista de usuários retornada com sucesso.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 router.get('/', async (req, res) =>{
     const userList = await User.find().select("-passwordHash");
 
@@ -14,6 +33,29 @@ router.get('/', async (req, res) =>{
     }
     res.send(userList);
 });
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   get:
+ *     summary: Retorna um usuário específico.
+ *     tags:
+ *       - Users
+ *     description: Retorna um usuário com base no ID fornecido.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID do usuário
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Usuário retornado com sucesso.
+ *       404:
+ *         description: Usuário não encontrado.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 
 router.get("/:id", async(req,res)=> {
 
@@ -27,6 +69,28 @@ try{
 }
 
 });
+/**
+ * @swagger
+ * /api/users/register:
+ *   post:
+ *     summary: Registra um novo usuário.
+ *     tags:
+ *       - Users     
+ *     description: Cria um novo usuário com as informações fornecidas.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: Usuário criado com sucesso.
+ *       400:
+ *         description: Email já cadastrado.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 router.post('/register', async (req, res) => {
     try {
         const { name, email, password, phone, isAdmin, street, apartment, zip, city, country } = req.body;
@@ -70,6 +134,20 @@ router.post('/register', async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/users/get/count:
+ *   get:
+ *     summary: Retorna o número total de usuários.
+ *     tags:
+ *       - Users 
+ *     description: Retorna o número total de usuários cadastrados no sistema.
+ *     responses:
+ *       200:
+ *         description: Número total de usuários retornado com sucesso.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 router.get("/get/count", async (req,res) => {
     try{
         const userCount = await User.countDocuments((count)=> count);
@@ -78,7 +156,30 @@ router.get("/get/count", async (req,res) => {
         res.status(500).json({ success: false })
     }
 });
-
+/**
+ * @swagger
+ * /api/users/update:
+ *   put:
+ *     summary: Atualiza as informações de um usuário.
+ *     tags:
+ *       - Users
+ *     description: Atualiza as informações de um usuário com base no ID fornecido.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: Usuário atualizado com sucesso.
+ *       400:
+ *         description: Email já cadastrado.
+ *       404:
+ *         description: Usuário não encontrado.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 router.put("/update", async (req, res) => {
     try {
         const { name, email, password, phone, isAdmin, street, apartment, zip, city, country } = req.body;
@@ -116,7 +217,28 @@ router.put("/update", async (req, res) => {
         return res.status(500).json({ success: false, message: error.message });
     }
 });
-
+/**
+ * @swagger
+ * /api/users/login:
+ *   post:
+ *     summary: Autentica um usuário.
+ *     tags:
+ *       - Users
+ *     description: Autentica um usuário com base no email e senha fornecidos.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginInput'
+ *     responses:
+ *       200:
+ *         description: Usuário autenticado com sucesso.
+ *       400:
+ *         description: Credenciais inválidas.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
@@ -146,7 +268,29 @@ router.post("/login", async (req, res) => {
         return res.status(500).json({ success: false, message: error.message });
     }
 });
-
+/**
+ * @swagger 
+ * /api/users/{id}:
+ *   delete:
+ *     summary: Remove um usuário.
+ *     tags:
+ *       - Users
+ *     description: Remove um usuário com base no ID fornecido.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID do usuário
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Usuário removido com sucesso.
+ *       404:
+ *         description: Usuário não encontrado.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 
 router.delete("/:id", async (req, res) => {
     try {
@@ -160,6 +304,23 @@ router.delete("/:id", async (req, res) => {
         return res.status(500).json({ success: false, message: error.message });
     }
 });
+
+/**
+ * @swagger 
+ * /api/users/perfil:
+ *   get:
+ *     summary: Retorna o perfil do usuário autenticado.
+ *     tags:
+ *       - Users
+ *     description: Retorna as informações do perfil do usuário autenticado.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil do usuário retornado com sucesso.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 
 router.get("/perfil", async (req,res) => {
  return res.json(req.user)

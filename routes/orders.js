@@ -4,6 +4,32 @@ const router = express.Router(); // Use express.Router() em vez de express()
 const Order = require("../models/order");
 const OrderItem = require("../models/order-item"); // Importe corretamente o modelo OrderItem
 
+/**
+ * @swagger
+ * tags:
+ *   - name: Orders
+ *     description: Operações relacionadas a Pedidos
+ */
+/**
+ * @swagger
+ * /api/orders:
+ *   get:
+ *     summary: Lista de pedidos
+ *     tags: [Orders]
+ *     description: Retorna uma lista de todos os pedidos
+ *     responses:
+ *       '200':
+ *         description: Sucesso na obtenção da lista de pedidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Order'
+ *       '500':
+ *         description: Erro interno do servidor
+ */
+
 router.get("/", async (req, res) => {
     try {
         const orderList = await Order.find().populate("user", "name").sort({ dateOrdered: -1 }).populate({ 
@@ -16,6 +42,31 @@ router.get("/", async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/orders/{id}:
+ *   get:
+ *     summary: Detalhes do pedido
+ *     tags: [Orders]
+ *     description: Retorna os detalhes de um pedido específico
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID do pedido
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Sucesso na obtenção dos detalhes do pedido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Order'
+ *       '500':
+ *         description: Erro interno do servidor
+ */
+
 router.get("/:id", async (req, res) => {
     try {
         const order = await Order.findById(req.params.id).populate("user", "name");
@@ -27,6 +78,30 @@ router.get("/:id", async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+
+/**
+ * @swagger
+ * /api/orders:
+ *   post:
+ *     summary: Criar novo pedido
+ *     tags: [Orders]
+ *     description: Cria um novo pedido
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NewOrder'
+ *     responses:
+ *       '201':
+ *         description: Pedido criado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Order'
+ *       '500':
+ *         description: Erro interno do servidor
+ */
 
 router.post("/", async (req, res) => {
     try {
@@ -69,6 +144,30 @@ router.post("/", async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+
+/**
+ * @swagger
+ * /api/orders/{id}:
+ *   delete:
+ *     summary: Excluir pedido existente
+ *     tags: [Orders]
+ *     description: Exclui um pedido existente
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID do pedido
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Pedido excluído com sucesso
+ *       '404':
+ *         description: Pedido não encontrado
+ *       '500':
+ *         description: Erro interno do servidor
+ */
+
 router.delete("/:id", async (req, res) => {
     try {
         const order = await Order.findById(req.params.id);
@@ -88,6 +187,28 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/orders/count:
+ *   get:
+ *     summary: Contagem total de pedidos
+ *     tags: [Orders]
+ *     description: Retorna o número total de pedidos
+ *     responses:
+ *       '200':
+ *         description: Sucesso na obtenção da contagem de pedidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 orderCount:
+ *                   type: number
+ *       '500':
+ *         description: Erro interno do servidor
+ */
+
+
 router.get('/count', async (req, res) => {
     try {
         const orderCount = await Order.countDocuments();
@@ -96,6 +217,30 @@ router.get('/count', async (req, res) => {
         res.status(500).json({ success: false });
     }        
 });
+
+/**
+ * @swagger
+ * /api/orders/totalsales:
+ *   get:
+ *     summary: Total de vendas
+ *     tags: [Orders]
+ *     description: Retorna o total de vendas
+ *     responses:
+ *       '200':
+ *         description: Sucesso na obtenção do total de vendas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totalSales:
+ *                   type: number
+ *       '400':
+ *         description: O total de vendas não pode ser gerado
+ *       '500':
+ *         description: Erro interno do servidor
+ */
+
 router.get("/totalsales", async (req, res) => {
     try {
         const orders = await Order.find();
@@ -113,6 +258,32 @@ router.get("/totalsales", async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/orders/usersorders/{userid}:
+ *   get:
+ *     summary: Pedidos do usuário
+ *     tags: [Orders]
+ *     description: Retorna os pedidos de um usuário específico
+ *     parameters:
+ *       - in: path
+ *         name: userid
+ *         required: true
+ *         description: ID do usuário
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Sucesso na obtenção dos pedidos do usuário
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Order'
+ *       '500':
+ *         description: Erro interno do servidor
+ */
 router.get('/usersorders/:userid', async (req, res) => {
     try{
         const userOrderList = await Order.find({user: req.params.userid})

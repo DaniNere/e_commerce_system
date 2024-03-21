@@ -28,6 +28,39 @@ const storage = multer.diskStorage({
 })
 
 const upload  = multer({ storage: storage })
+/**
+ * @swagger
+ * tags:
+ *   - name: Products
+ *     description: Operações relacionadas a Produtos
+ */
+
+/**
+ * @swagger
+ * /api/products:
+ *   get:
+ *     summary: Lista de produtos
+ *     tags:
+ *       - Products
+ *     description: Retorna uma lista de produtos de acordo com os filtros fornecidos.
+ *     parameters:
+ *       - in: query
+ *         name: categories
+ *         description: Filtrar por categorias (separadas por vírgula)
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Sucesso na obtenção da lista de produtos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ *       '500':
+ *         description: Erro interno do servidor
+ */
 
 router.get("/", async (req, res) => {
     try {
@@ -44,6 +77,34 @@ router.get("/", async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   get:
+ *     summary: Retorna um produto pelo ID
+ *     tags:
+ *       - Products
+ *     description: Retorna um produto específico com base no ID fornecido.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID do produto a ser retornado
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Sucesso na obtenção do produto
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       '404':
+ *         description: Produto não encontrado
+ *       '500':
+ *         description: Erro interno do servidor
+ */
+
 
 router.get("/:id", async (req, res) => {
     try {
@@ -56,6 +117,32 @@ router.get("/:id", async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 });
+/**
+ * @swagger
+ * /api/products:
+ *   post:
+ *     summary: Cria um novo produto
+ *     tags:
+ *       - Products
+ *     description: Cria um novo produto com os dados fornecidos.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ProductInput'
+ *     responses:
+ *       '201':
+ *         description: Produto criado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       '400':
+ *         description: ID de categoria inválido
+ *       '500':
+ *         description: Erro interno do servidor
+ */
 
 router.post("/", upload.single("image"), async (req, res) => {
 
@@ -91,6 +178,42 @@ router.post("/", upload.single("image"), async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   put:
+ *     summary: Atualiza um produto existente
+ *     tags:
+ *       - Products
+ *     description: Atualiza um produto existente com base no ID fornecido.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID do produto a ser atualizado
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ProductInput'
+ *     responses:
+ *       '200':
+ *         description: Produto atualizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       '400':
+ *         description: ID de categoria inválido
+ *       '404':
+ *         description: Produto não encontrado
+ *       '500':
+ *         description: Erro interno do servidor
+ */
+
 
 router.put("/:id", async (req, res) => {
     try {
@@ -106,7 +229,29 @@ router.put("/:id", async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 });
-
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   delete:
+ *     summary: Remove um produto existente
+ *     tags:
+ *       - Products
+ *     description: Remove um produto existente com base no ID fornecido.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID do produto a ser removido
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Produto removido com sucesso
+ *       '404':
+ *         description: Produto não encontrado
+ *       '500':
+ *         description: Erro interno do servidor
+ */
 router.delete("/:id", async (req, res) => {
     try {
         const product = await Product.findByIdAndDelete(req.params.id);
@@ -118,6 +263,31 @@ router.delete("/:id", async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+/**
+ * @swagger
+ * /api/products/get/count:
+ *   get:
+ *     summary: Retorna o número total de produtos
+ *     tags:
+ *       - Products
+ *     description: Retorna o número total de produtos na base de dados.
+ *     responses:
+ *       '200':
+ *         description: Sucesso na obtenção do número total de produtos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   description: Indica se a operação foi bem-sucedida
+ *                 productCount:
+ *                   type: number
+ *                   description: O número total de produtos
+ *       '500':
+ *         description: Erro interno do servidor
+ */
 
 router.get('/get/count', async (req, res) => {
     try {
@@ -127,6 +297,28 @@ router.get('/get/count', async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+/**
+ * @swagger
+ * /api/products/get/featured:
+ *   get:
+ *     summary: Retorna produtos em destaque
+ *     tags:
+ *       - Products
+ *     description: Retorna uma lista de produtos em destaque.
+ *     responses:
+ *       '200':
+ *         description: Sucesso na obtenção de produtos em destaque
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ *       '404':
+ *         description: Nenhum produto em destaque encontrado
+ *       '500':
+ *         description: Erro interno do servidor
+ */
 
 router.get('/get/featured', async (req, res) => {
     try {
@@ -139,6 +331,38 @@ router.get('/get/featured', async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+
+/**
+ * @swagger
+ * /api/products/gallery-images/{id}:
+ *   put:
+ *     summary: Atualiza as imagens da galeria de um produto
+ *     tags:
+ *       - Products
+ *     description: Atualiza as imagens da galeria de um produto existente com base no ID fornecido.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID do produto cuja galeria de imagens será atualizada
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *     responses:
+ *       '200':
+ *         description: Galeria
+ */
 
 router.put('/gallery-images/:id', upload.array('images', 10), async (req, res) => {
 

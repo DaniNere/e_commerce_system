@@ -4,10 +4,12 @@ const mongoose = require("mongoose");
 const dotenv = require('dotenv').config();
 const cors = require('cors');
 
+// Importar configurações do Swagger
+const swaggerConfig = require("./swaggerconfig");
 
 const app = express();  // Inicialize o objeto app aqui
 
-
+app.use('/api-docs', swaggerConfig.serveSwaggerUI, swaggerConfig.setupSwaggerUI);
 
 const categoriesRoute = require('./routes/categories');
 const productRoute = require('./routes/products');
@@ -28,7 +30,6 @@ app.options('*', cors());
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(authJwt);
-app.use(errorHandler);
 app.use('/public/uploads', express.static( __dirname + '/public/uploads'));
 
 
