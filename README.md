@@ -582,3 +582,15 @@ GET | /api/products/get/count
 ````
 ## Author
    [Danielle Nere](https://github.com/DaniNere)
+   
+## Contributing
+This repository was created for study purposes, so please contribute to it.
+If I helped you in any way, I'll be happy to know. And if you know someone who identifies with the content, be sure to share.
+
+If possible:
+
+⭐️ Star the project
+
+🐛 Find and report issues
+
+
